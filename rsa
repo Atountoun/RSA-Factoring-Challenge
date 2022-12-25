@@ -1,4 +1,47 @@
-#!/usr/bin/python3
+#!/bin/bash
 
-from math import fmod
-import sys
+is_factor()
+{
+        if [ $# -ne 3 ]
+	then
+		args=("$@")
+		counter=0
+		number_2=0
+		for arg in ${args[*]}
+		do
+			if [ $counter -gt 1 ]
+			then
+				number_2=$(echo $arg*$number_2 | bc)
+			fi
+			counter=$((counter + 1))
+		done
+	else
+		number_2=$3
+	fi
+
+	number_1=$2
+	number=$(echo "$1" | tr ':' '=')
+
+	result=$(echo "if($number_2 > $number_1) 1 else 0" | bc)
+
+	if ((result == 1))
+	then
+		tmp=$number_1
+		number_1=$number_2
+		number_2=$tmp
+	fi
+
+	echo "$number$number_1*$number_2"
+}
+
+if [ $# -ne 1 ]
+then
+	echo 'Usage: rsa <file>'
+	exit 1
+else
+	while read line
+	do
+		result=$(factor "$line")
+		is_factor $result
+	done < "$1"
+fi
