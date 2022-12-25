@@ -1,0 +1,27 @@
+#!/usr/bin/python3
+
+from math import fmod
+import sys
+
+
+filename = sys.argv[1]
+
+# count the number of lines of the file
+with open(filename, 'r', encoding='utf-8') as file:
+    content = file.read()
+    length = content.count("\n")
+
+line = 0
+
+with open(filename, 'r', encoding='utf-8') as file:
+    while line < length:
+        # read the next stored number and count increment line by 1
+        number = int(file.readline())
+        line += 1
+        forward = 2
+        while forward < number // 2:
+            # calculate the remainder of the division of number per foward
+            if fmod(number, forward) == 0:
+                print(f"{number}={int(number/forward)}*{forward}")
+                break
+            forward += 1
